@@ -64,6 +64,25 @@ th, td {
 th {
   background: rgba(0,0,0,0.9);
 }
+
+}
+.link-uf {
+  color: yellow;
+  font-weight: bold;
+  text-decoration: underline;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+.link-uf:hover {
+  color: gold;
+}
+#ultimaAtualizacao {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #ffeb3b;
+  text-shadow: 1px 1px 2px black;
+}
+
 .menu {
 	flex-direction:column;
 	align-items: center;	
