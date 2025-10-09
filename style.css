@@ -96,15 +96,15 @@ th {
  display: block;
   width: 100%;
   box-sizing: border-box;
-  background-color: #34495e;
-  color: white;
+  background-color: orange;
+  color: black;
   text-decoration: none;
   font-weight: bold;
   font-family: sans-serif;
   padding: 12px 20px;
   border-radius: 8px;
   transition: background-color 0.3s, color 0.3s;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+  box-shadow: 5px 5px 8px rgba(0,0,0,0.8);
   text-align: center;
   word-break: break-word;
 }
