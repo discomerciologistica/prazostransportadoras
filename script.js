@@ -51,7 +51,7 @@ function configurarPesquisa(campoInput, campoSugestoes, propriedade) {
 // Enter para pesquisar
 search.addEventListener("keydown", e => {
   if (e.key === "Enter") {
-    mostrarResultados(search.value);
+    mostrarResultados(campoInput.value, propriedade);
     suggestions.innerHTML = "";
   }
 });
