@@ -2,12 +2,12 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>CONSULTA DE PRAZOS</title>
+  <title>Consulta de Prazos</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>CONSULTA DE PRAZOS</h1>
+    <h1>Consulta de Prazos</h1>
     <!-- Novo link -->
     <nav class="menu">
   <ul>
@@ -16,18 +16,9 @@
 </nav>
 
    
-     <div style="margin-bottom: 15px;"></div>
-   
-    <p> 
-    <input type="text" id="searchCidade" placeholder="Pesquisar Cidade..." autocomplete="off">
-    <ul id="suggestionsCidade" class="suggestions"></ul>
-
-    <input type="text" id="searchTransportadora" placeholder="Pesquisar Transportadora..." autocomplete="off">
-    <ul id="suggestionsTransportadora" class="suggestions"></ul>
-
-    <input type="text" id="searchUF" placeholder="Pesquisar UF..." autocomplete="off">
-    <ul id="suggestionsUF" class="suggestions"></ul>
-  </p>
+    <div style="margin-bottom: 15px;"></div>
+    <input type="text" id="search" placeholder="Digite a cidade..." autocomplete="off">
+    <ul id="suggestions"></ul>
     <table id="results">
       <thead>
         <tr>
@@ -40,11 +31,7 @@
       </thead>
       <tbody></tbody>
     </table>
-
-    
-     <p id="ultimaAtualizacao">Última atualização: --</p>
   </div>
-  
   <script src="script.js"></script>
 </body>
 </html>
