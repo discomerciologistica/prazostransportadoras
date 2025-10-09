@@ -25,8 +25,6 @@ fetch("dados.csv")
   });
 
 // Elementos
-const search = document.getElementById("search");
-const suggestions = document.getElementById("suggestions");
 const tbody = document.querySelector("#results tbody");
 
 // Função de sugestões
