@@ -30,23 +30,25 @@ const suggestions = document.getElementById("suggestions");
 const tbody = document.querySelector("#results tbody");
 
 // Função de sugestões
-search.addEventListener("input", () => {
-  const termo = search.value.toLowerCase();
-  suggestions.innerHTML = "";
-  if (termo.length > 0) {
-    const filtrados = dados.filter(d => d.cidade.toLowerCase().includes(termo));
-    filtrados.slice(0, 5).forEach(d => {
-      const li = document.createElement("li");
-      li.textContent = d.cidade;
-      li.onclick = () => {
-        search.value = d.cidade;
-        suggestions.innerHTML = "";
-        mostrarResultados(d.cidade);
-      };
-      suggestions.appendChild(li);
-    });
-  }
-});
+function configurarPesquisa(campoInput, campoSugestoes, propriedade) {
+  campoInput.addEventListener("input", () => {
+    const termo = campoInput.value.toLowerCase();
+    campoSugestoes.innerHTML = "";
+    if (termo.length > 0) {
+      const filtrados = dados.filter(d => d[propriedade]?.toLowerCase().includes(termo));
+      const unicos = [...new Set(filtrados.map(d => d[propriedade]))]; // evitar repetições
+      unicos.slice(0, 5).forEach(valor => {
+        const li = document.createElement("li");
+        li.textContent = valor;
+        li.onclick = () => {
+          campoInput.value = valor;
+          campoSugestoes.innerHTML = "";
+          mostrarResultados(valor, propriedade);
+        };
+        campoSugestoes.appendChild(li);
+      });
+    }
+  });
 
 // Enter para pesquisar
 search.addEventListener("keydown", e => {
