@@ -180,7 +180,7 @@ td:last-child {
  display: block;
   width: 100%;
   box-sizing: border-box;
-  background-color: linear-gradient(90deg, orange, gold);
+  background-color: orange;
   color: black;
   text-decoration: none;
   font-weight: bold;
