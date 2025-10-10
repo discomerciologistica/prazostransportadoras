@@ -8,6 +8,9 @@
 <body>
   <div class="container">
     <h1>Consulta de Prazos</h1>
+    
+    
+    
     <!-- Novo link -->
     <nav class="menu">
   <ul>
@@ -17,8 +20,18 @@
 
    
     <div style="margin-bottom: 15px;"></div>
-    <input type="text" id="search" placeholder="Digite a cidade..." autocomplete="off">
-    <ul id="suggestions"></ul>
+    
+     <!-- Campos de pesquisa -->
+    <input type="text" id="searchCidade" placeholder="Pesquisar Cidade..." autocomplete="off">
+    <ul id="suggestionsCidade" class="suggestions"></ul>
+
+    <input type="text" id="searchTransportadora" placeholder="Pesquisar Transportadora..." autocomplete="off">
+    <ul id="suggestionsTransportadora" class="suggestions"></ul>
+
+    <input type="text" id="searchUF" placeholder="Pesquisar UF..." autocomplete="off">
+    <ul id="suggestionsUF" class="suggestions"></ul>
+    
+    
     <table id="results">
       <thead>
         <tr>
