@@ -7,13 +7,10 @@ fetch("dados.csv")
     if (!isNaN(dataArquivo)) {
       const opcoes = { 
         day: "2-digit", month: "2-digit", year: "numeric", 
-        hour: "2-digit", minute: "2-digit" 
+        hour: "2-digit", minute: "2-digit"
       };
       document.getElementById("ultimaAtualizacao").textContent =
         "Última atualização: " + dataArquivo.toLocaleString("pt-BR", opcoes);
-    } else {
-      document.getElementById("ultimaAtualizacao").textContent =
-        "Última atualização: (não disponível)";
     }
     return response.text();
   })
@@ -25,72 +22,94 @@ fetch("dados.csv")
   });
 
 // Elementos
-
 const tbody = document.querySelector("#results tbody");
+const inputGeral = document.getElementById("searchGeral");
+const sugestoes = document.getElementById("suggestionsGeral");
+const contador = document.getElementById("contadorResultados");
 
-
-// Função genérica de sugestões
-function configurarPesquisa(campoInput, campoSugestoes, propriedade) {
-  campoInput.addEventListener("input", () => {
-    const termo = campoInput.value.toLowerCase();
-    campoSugestoes.innerHTML = "";
-    if (termo.length > 0) {
-      const filtrados = dados.filter(d => d[propriedade]?.toLowerCase().includes(termo));
-      const unicos = [...new Set(filtrados.map(d => d[propriedade]))]; // evitar repetições
-      unicos.slice(0, 5).forEach(valor => {
-        const li = document.createElement("li");
-        li.textContent = valor;
-        li.onclick = () => {
-          campoInput.value = valor;
-          campoSugestoes.innerHTML = "";
-          mostrarResultados(valor, propriedade);
-        };
-        campoSugestoes.appendChild(li);
-      });
-    }
-  });
-  
-  // Pressionar Enter também pesquisa
-  campoInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-      mostrarResultados(campoInput.value, propriedade);
-      campoSugestoes.innerHTML = "";
-    }
-  });
+// Função para remover acentos
+function removerAcentos(str) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
-  
-// Mostrar resultados na tabela
-function mostrarResultados(valor, campo) {
+
+// Mostrar resultados exatos
+function mostrarResultados(filtrados) {
   tbody.innerHTML = "";
-  const filtrados = dados.filter(d => d[campo]?.toLowerCase().includes(valor.toLowerCase()));
+  if (filtrados.length === 0) {
+    tbody.innerHTML = "<tr><td colspan='5'>Nenhum resultado encontrado.</td></tr>";
+    contador.textContent = "";
+    return;
+  }
+
   filtrados.forEach(d => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${d.cidade}</td>
-      <td>${d.transportadora}</td>
-      <td>${d.uf}</td>
-      <td>${d.prazo}</td>
-      <td>${d.tipo}</td>
+      <td>${d.cidade || ""}</td>
+      <td>${d.transportadora || ""}</td>
+      <td>${d.uf || ""}</td>
+      <td>${d.prazo || ""}</td>
+      <td>${d.tipo || ""}</td>
     `;
     tbody.appendChild(tr);
   });
+
+  contador.textContent = `${filtrados.length} resultado${filtrados.length > 1 ? "s" : ""} encontrado${filtrados.length > 1 ? "s" : ""}`;
 }
 
-// Aplicar a função para cada campo
-configurarPesquisa(
-  document.getElementById("searchCidade"),
-  document.getElementById("suggestionsCidade"),
-  "cidade"
-);
+// Busca exata (sem acento)
+function buscar(termo) {
+  const termoNormalizado = removerAcentos(termo.trim().toLowerCase());
 
-configurarPesquisa(
-  document.getElementById("searchTransportadora"),
-  document.getElementById("suggestionsTransportadora"),
-  "transportadora"
-);
+  const filtrados = dados.filter(d => {
+    const cidade = removerAcentos(d.cidade?.toLowerCase() || "");
+    const transp = removerAcentos(d.transportadora?.toLowerCase() || "");
+    const uf = removerAcentos(d.uf?.toLowerCase() || "");
+    // Busca exata — precisa ser igual
+    return (
+      cidade === termoNormalizado ||
+      transp === termoNormalizado ||
+      uf === termoNormalizado
+    );
+  });
 
-configurarPesquisa(
-  document.getElementById("searchUF"),
-  document.getElementById("suggestionsUF"),
-  "uf"
-);
+  mostrarResultados(filtrados);
+}
+
+// Sugestões (contém o termo digitado)
+inputGeral.addEventListener("input", () => {
+  const termo = inputGeral.value.trim().toLowerCase();
+  const termoNormalizado = removerAcentos(termo);
+  sugestoes.innerHTML = "";
+  if (termo.length < 2) return;
+
+  const combinados = dados.flatMap(d => [d.cidade, d.transportadora, d.uf]);
+  const unicos = [...new Set(
+    combinados.filter(v => removerAcentos(v?.toLowerCase() || "").includes(termoNormalizado))
+  )];
+
+  unicos.slice(0, 5).forEach(valor => {
+    const li = document.createElement("li");
+    li.textContent = valor;
+    li.onclick = () => {
+      inputGeral.value = valor;
+      sugestoes.innerHTML = "";
+      buscar(valor);
+    };
+    sugestoes.appendChild(li);
+  });
+});
+
+// Pressionar Enter → busca exata
+inputGeral.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    sugestoes.innerHTML = "";
+    buscar(inputGeral.value);
+  }
+});
+
+// Fechar sugestões ao clicar fora
+document.addEventListener("click", e => {
+  if (!sugestoes.contains(e.target) && e.target !== inputGeral) {
+    sugestoes.innerHTML = "";
+  }
+});
