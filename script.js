@@ -113,3 +113,30 @@ document.addEventListener("click", e => {
     sugestoes.innerHTML = "";
   }
 });
+
+// ===== DOWNLOAD PLANILHA =====
+document.getElementById("btnDownload").addEventListener("click", () => {
+  if (!dados.length) {
+    alert("Os dados ainda não carregaram.");
+    return;
+  }
+
+  // Cabeçalhos
+  let csv = "Cidade,Transportadora,UF,Prazo - Dias Úteis,Capital/Interior\n";
+
+  // Dados
+  dados.forEach(d => {
+    csv += `${d.cidade},${d.transportadora},${d.uf},${d.prazo},${d.tipo}\n`;
+  });
+
+  // Criar arquivo
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "prazos_transportadoras.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
+});
