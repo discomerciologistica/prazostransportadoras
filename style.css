@@ -126,3 +126,23 @@ mark {
   #searchGeral { width: 90%; }
   table { font-size: 12px; }
 }
+
+/* Botão download */
+.download-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: linear-gradient(90deg, #00e676, #00c853);
+  color: black;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 4px 4px 8px rgba(0,0,0,0.6);
+  z-index: 999;
+  transition: 0.2s;
+}
+.download-btn:hover {
+  transform: scale(1.05);
+}
