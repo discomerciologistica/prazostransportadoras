@@ -114,29 +114,31 @@ document.addEventListener("click", e => {
   }
 });
 
-// ===== DOWNLOAD PLANILHA =====
+// ===== DOWNLOAD EM EXCEL REAL =====
 document.getElementById("btnDownload").addEventListener("click", () => {
   if (!dados.length) {
     alert("Os dados ainda não carregaram.");
     return;
   }
 
-  // Cabeçalhos
-  let csv = "Cidade,Transportadora,UF,Prazo - Dias Úteis,Capital/Interior\n";
+  // Monta os dados formatados
+  const planilha = dados.map(d => ({
+    Cidade: d.cidade,
+    Transportadora: d.transportadora,
+    UF: d.uf,
+    "Prazo - Dias Úteis": d.prazo,
+    "Capital / Interior": d.tipo
+  }));
 
-  // Dados
-  dados.forEach(d => {
-    csv += `${d.cidade},${d.transportadora},${d.uf},${d.prazo},${d.tipo}\n`;
-  });
+  // Criar worksheet
+  const ws = XLSX.utils.json_to_sheet(planilha);
 
-  // Criar arquivo
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
+  // Criar workbook
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Prazos");
 
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "prazos_transportadoras.csv";
-  a.click();
+  // Nome com data
+  const hoje = new Date().toLocaleDateString("pt-BR").replace(/\//g, "-");
 
-  URL.revokeObjectURL(url);
+  XLSX.writeFile(wb, `Prazos_Transportadoras_${hoje}.xlsx`);
 });
