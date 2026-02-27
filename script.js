@@ -16,8 +16,8 @@ fetch("dados.csv")
   })
   .then(text => {
     dados = text.split("\n").slice(1).map(linha => {
-      const [cidade, transportadora, uf, prazo, tipo] = linha.split(",");
-      return { cidade, transportadora, uf, prazo, tipo };
+      const [cidade, transportadora, uf, prazo, tipo, dias] = linha.split(",");
+      return { cidade, transportadora, uf, prazo, tipo, dias };
     });
   });
 
@@ -49,6 +49,7 @@ function mostrarResultados(filtrados) {
       <td>${d.uf || ""}</td>
       <td>${d.prazo || ""}</td>
       <td>${d.tipo || ""}</td>
+      <td>${d.dias || ""}</td>
     `;
     tbody.appendChild(tr);
   });
@@ -127,7 +128,7 @@ document.getElementById("btnDownload").addEventListener("click", () => {
     Transportadora: d.transportadora,
     UF: d.uf,
     "Prazo - Dias Úteis": d.prazo,
-    "Capital / Interior": d.tipo
+    "Capital / Interior": d.tipo"
   }));
 
   // Criar worksheet
