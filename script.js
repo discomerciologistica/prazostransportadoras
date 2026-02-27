@@ -16,8 +16,8 @@ fetch("dados.csv")
   })
   .then(text => {
     dados = text.split("\n").slice(1).map(linha => {
-      const [cidade, transportadora, uf, prazo, tipo, dias] = linha.split(",");
-      return { cidade, transportadora, uf, prazo, tipo, dias };
+      const [cidade, transportadora, uf, prazo, tipo] = linha.split(",");
+      return { cidade, transportadora, uf, prazo, tipo };
     });
   });
 
@@ -49,7 +49,6 @@ function mostrarResultados(filtrados) {
       <td>${d.uf || ""}</td>
       <td>${d.prazo || ""}</td>
       <td>${d.tipo || ""}</td>
-      <td>${d.dias || ""}</td>
     `;
     tbody.appendChild(tr);
   });
