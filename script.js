@@ -127,7 +127,7 @@ document.getElementById("btnDownload").addEventListener("click", () => {
     Transportadora: d.transportadora,
     UF: d.uf,
     "Prazo - Dias Úteis": d.prazo,
-    "Capital / Interior": d.tipo"
+    "Capital / Interior": d.tipo
   }));
 
   // Criar worksheet
