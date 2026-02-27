@@ -36,7 +36,7 @@ function removerAcentos(str) {
 function mostrarResultados(filtrados) {
   tbody.innerHTML = "";
   if (filtrados.length === 0) {
-    tbody.innerHTML = "<tr><td colspan='5'>Nenhum resultado encontrado.</td></tr>";
+    tbody.innerHTML = "<tr><td colspan='6'>Nenhum resultado encontrado.</td></tr>";
     contador.textContent = "";
     return;
   }
@@ -49,6 +49,7 @@ function mostrarResultados(filtrados) {
       <td>${d.uf || ""}</td>
       <td>${d.prazo || ""}</td>
       <td>${d.tipo || ""}</td>
+      <td>${d.dias || ""}</td>
     `;
     tbody.appendChild(tr);
   });
@@ -123,12 +124,13 @@ document.getElementById("btnDownload").addEventListener("click", () => {
 
   // Monta os dados formatados
   const planilha = dados.map(d => ({
-    Cidade: d.cidade,
-    Transportadora: d.transportadora,
-    UF: d.uf,
-    "Prazo - Dias Úteis": d.prazo,
-    "Capital / Interior": d.tipo
-  }));
+  Cidade: d.cidade,
+  Transportadora: d.transportadora,
+  UF: d.uf,
+  "Prazo - Dias Úteis": d.prazo,
+  "Capital / Interior": d.tipo,
+  Região: d.dias
+}));
 
   // Criar worksheet
   const ws = XLSX.utils.json_to_sheet(planilha);
