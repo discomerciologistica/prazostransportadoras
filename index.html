@@ -209,6 +209,7 @@ select, .modal-box input:not([type=checkbox]):not([type=radio]):not([type=file])
   font-size: 14px;
   outline: none;
 }
+.pin-input { -webkit-text-security: disc; text-security: disc; letter-spacing: 0.2em; }
 select:focus, .modal-box input:focus { border-color: var(--azul); box-shadow: 0 0 0 3px rgba(45, 140, 255, 0.22); }
 select option { background: #0f2342; color: #fff; }
 input[type=date] { color-scheme: dark; }
@@ -455,7 +456,7 @@ body.is-admin .col-acoes { display: table-cell; }
     <section class="card busca-card">
       <div class="busca">
         <span class="busca-icone" aria-hidden="true">🔍</span>
-        <input type="text" id="searchGeral" placeholder="Digite cidade, transportadora ou UF..." autocomplete="off">
+        <input type="text" id="searchGeral" name="busca-prazos" placeholder="Digite cidade, transportadora ou UF..." autocomplete="off" spellcheck="false">
       </div>
       <div class="filtros">
         <select id="selUF" aria-label="Filtrar por UF"><option value="">Todas as UFs</option></select>
@@ -494,7 +495,7 @@ body.is-admin .col-acoes { display: table-cell; }
     <div class="modal-box modal-pequeno">
       <h2>Área administrativa</h2>
       <p class="muted">Digite o PIN para editar os prazos.</p>
-      <input type="password" id="inpPin" inputmode="numeric" autocomplete="off" placeholder="PIN">
+      <input type="text" id="inpPin" class="pin-input" inputmode="numeric" autocomplete="one-time-code" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore placeholder="PIN">
       <p id="erroLogin" class="erro" hidden></p>
       <div class="modal-acoes">
         <button class="btn btn-ghost" data-fechar>Cancelar</button>
@@ -1302,6 +1303,10 @@ $('btnImportOk').addEventListener('click', async () => {
 
 /* ---------- Início ---------- */
 (function init() {
+  if (!(window.CSS && CSS.supports && CSS.supports('-webkit-text-security', 'disc'))) {
+    $('inpPin').type = 'password';
+    $('inpPin').autocomplete = 'new-password';
+  }
   const t = sessionStorage.getItem(TOKEN_KEY);
   if (t) entrarAdmin(t);
   carregar();
