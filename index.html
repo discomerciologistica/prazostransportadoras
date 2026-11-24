@@ -551,7 +551,7 @@ body.is-admin .col-acoes { display: table-cell; }
   <div id="modalAcrescimos" class="modal" hidden>
     <div class="modal-box modal-largo">
       <h2>Acréscimo de prazo</h2>
-      <p class="muted">Soma dias ao prazo da transportadora em datas especiais (Black Friday, fim de ano...). O site mostra o prazo já somado, com o valor original riscado ao lado. Se você informar as datas, o acréscimo liga e desliga sozinho.</p>
+      <p class="muted">Soma dias ao prazo da transportadora em datas especiais (Black Friday, fim de ano...). O site mostra só o prazo final já somado (o valor original continua guardado na planilha). Se você informar as datas, o acréscimo liga e desliga sozinho.</p>
       <div id="listaAcrescimos" class="acr-lista"></div>
       <button type="button" id="btnAddAcr" class="btn btn-ghost">＋ Adicionar transportadora</button>
       <datalist id="dlMotivo">
@@ -709,7 +709,7 @@ function renderBanner(ativas) {
     <div>
       <div class="banner-titulo">Atenção: prazos com acréscimo</div>
       ${linhas}
-      <div class="banner-nota">Os prazos da lista já estão somados. O valor original aparece riscado ao lado.</div>
+      <div class="banner-nota">Os prazos exibidos na lista já incluem esse acréscimo.</div>
     </div>`;
   el.hidden = false;
 }
@@ -859,9 +859,8 @@ function renderizar() {
   }
 
   tbody.innerHTML = lista.map(d => {
-    const prazo = d._extra
-      ? `<span class="prazo-wrap"><span class="prazo-novo com-extra">${esc(d._prazoAtual)}</span><span class="prazo-base">${esc(d.prazo)}</span><span class="tag-extra">+${d._extra}</span></span>`
-      : `<span class="prazo-novo">${esc(d.prazo)}</span>`;
+    // mostra só o prazo final (já com o acréscimo), sem valor original nem "+N"
+    const prazo = `<span class="prazo-novo">${esc(d._prazoAtual)}</span>`;
     return `
     <tr>
       <td data-label="Cidade" class="td-cidade">${esc(d.cidade)}</td>
